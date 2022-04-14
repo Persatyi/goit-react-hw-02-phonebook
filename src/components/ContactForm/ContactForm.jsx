@@ -2,11 +2,16 @@ import s from './ContactForm.module.css';
 import { Component, Fragment } from 'react';
 import data from 'db/input.json';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
 class ContactForm extends Component {
   state = {
     name: '',
     number: '',
+  };
+
+  static propTypes = {
+    addContact: PropTypes.func.isRequired,
   };
 
   onSubmit = e => {

@@ -40,20 +40,15 @@ class App extends Component {
     form();
   };
 
-  findTarget = word => {
-    if (!word) {
-      this.setState({
-        filter: '',
-      });
-      return;
-    }
-
-    const newArr = this.state.contacts.filter(el =>
-      el.name.toLowerCase().includes(word)
+  findTarget = () => {
+    return this.state.contacts.filter(el =>
+      el.name.toLowerCase().includes(this.state.filter)
     );
+  };
 
+  changeFilter = word => {
     this.setState({
-      filter: newArr,
+      filter: word,
     });
   };
 
@@ -74,12 +69,11 @@ class App extends Component {
       >
         <h1>Phonebook</h1>
         <ContactForm addContact={this.addContact} />
-
         <h2>Contacts</h2>
-        <Filter findTarget={this.findTarget} />
+        <Filter filter={this.state.filter} findTarget={this.changeFilter} />
         <ContactList
           deleteItem={this.deleteItem}
-          contacts={this.state.filter || this.state.contacts}
+          contacts={this.findTarget()}
         />
       </div>
     );
