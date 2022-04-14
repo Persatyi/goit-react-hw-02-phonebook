@@ -1,7 +1,7 @@
 import s from './ContactList.module.css';
 
 const ContactList = props => {
-  const { contacts } = props;
+  const { contacts, deleteItem } = props;
   return (
     <ul className={s.list}>
       {contacts.map(contact => (
@@ -9,7 +9,12 @@ const ContactList = props => {
           <p id={contact.id}>
             {contact.name}: {contact.number}
           </p>
-          <button className={s.button} type="button">
+          <button
+            onClick={deleteItem}
+            id={contact.id}
+            className={s.button}
+            type="button"
+          >
             Delete
           </button>
         </li>

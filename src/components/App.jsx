@@ -14,19 +14,54 @@ class App extends Component {
     filter: '',
   };
 
-  addContact = contact => {
+  addContact = (contact, form) => {
+    const ifName = this.state.contacts.find(
+      el => el.name.toLowerCase() === contact.name.toLowerCase()
+    );
+
+    if (ifName) {
+      alert(`${ifName.name} is already exist, please type new name`);
+      return;
+    }
+
+    const ifNumber = this.state.contacts.find(
+      el => el.number.replaceAll('-', '') === contact.number.replaceAll('-', '')
+    );
+
+    if (ifNumber) {
+      alert(`${ifNumber.number} is already exist, please type new number`);
+      return;
+    }
+
     this.setState(prev => ({
       contacts: [...prev.contacts, contact],
     }));
+
+    form();
   };
 
   findTarget = word => {
+    if (!word) {
+      this.setState({
+        filter: '',
+      });
+      return;
+    }
+
     const newArr = this.state.contacts.filter(el =>
       el.name.toLowerCase().includes(word)
     );
 
     this.setState({
       filter: newArr,
+    });
+  };
+
+  deleteItem = e => {
+    const id = e.target.id;
+    const newList = this.state.contacts.filter(el => el.id !== id);
+    this.setState({
+      contacts: newList,
     });
   };
 
@@ -42,7 +77,10 @@ class App extends Component {
 
         <h2>Contacts</h2>
         <Filter findTarget={this.findTarget} />
-        <ContactList contacts={this.state.contacts} />
+        <ContactList
+          deleteItem={this.deleteItem}
+          contacts={this.state.filter || this.state.contacts}
+        />
       </div>
     );
   }

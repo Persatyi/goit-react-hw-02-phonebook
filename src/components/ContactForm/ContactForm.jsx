@@ -11,13 +11,23 @@ class ContactForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const nameValue = form.elements.name.value;
-    const numberValue = form.elements.number.value;
-    const contact = { id: nanoid(), name: nameValue, number: numberValue };
+    const contact = { id: nanoid(), ...this.state };
 
-    this.props.addContact(contact);
-    form.reset();
+    this.props.addContact(contact, this.formReset);
+  };
+
+  formReset = () => {
+    this.setState({
+      name: '',
+      number: '',
+    });
+  };
+
+  controlTheInput = e => {
+    const { value, name } = e.target;
+    this.setState({
+      [name]: value,
+    });
   };
 
   render() {
@@ -32,6 +42,8 @@ class ContactForm extends Component {
                 {name}
               </label>
               <input
+                onChange={this.controlTheInput}
+                value={this.state[key]}
                 id={id}
                 className={s.input}
                 type={type}
